@@ -1,6 +1,5 @@
 import express from 'express';
 import axios from 'axios';
-import crypto from 'crypto';
 
 const app = express();
 app.use(express.json());
@@ -8,10 +7,8 @@ app.use(express.json());
 const PORT = process.env.PORT || 3000;
 const SEARXNG_URL = process.env.SEARXNG_URL || 'https://searxng-railway-production-2160.up.railway.app';
 
-// Health check
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
-// Models endpoint (OpenAI compatibility)
 app.get('/v1/models', (req, res) => {
   res.json({
     object: 'list',
@@ -19,7 +16,6 @@ app.get('/v1/models', (req, res) => {
   });
 });
 
-// Chat completions — main endpoint OpenClaw will call
 app.post('/v1/chat/completions', async (req, res) => {
   try {
     const { messages, model } = req.body;
@@ -64,7 +60,6 @@ app.post('/v1/chat/completions', async (req, res) => {
   }
 });
 
-// Perplexity-style search endpoint (optional)
 app.post('/v1/search', async (req, res) => {
   try {
     const { query, count = 5 } = req.body;
